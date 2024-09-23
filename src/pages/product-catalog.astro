@@ -4,6 +4,7 @@ import Layout from '../layouts/Layout.astro'
 import fetchApi from '../lib/strapi'
 
 const products = await fetchApi({ endpoint: "products", wrappedByKey: "data" });
+console.log("products: ", products);
 ---
 
 <Layout title="Product Catalog">

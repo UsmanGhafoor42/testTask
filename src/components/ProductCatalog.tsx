@@ -21,15 +21,16 @@ export const ProductCatalog = ({products}: {products: any}) => {
   console.log("products: ", products);
 
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="flex flex-wrap gap-4">
       {products.map((product: any)=> (
-        <div className="flex  items-center justify-center border rounded-md p-4 gap-10">
-         <img src={product.Image} alt={product.Title} />
+        <div className="flex items-center justify-center border rounded-md p-4 gap-10">
+         <img src="http://localhost:1337/uploads/Macbook_ad3a4877cd.jpeg" alt={product.Title}  width={400} height={400}/>
          <div className="flex flex-col items-center justify-center gap-5">
 
-         <h1>{product.Title}</h1>
-         <p>{product.Price}</p>
+         <h1 className="text-2xl font-bold">{product.Title}</h1>
+         <p className="text-xl"> Price: {product.Price}</p>
          </div>
+         <button className="bg-bla text-white px-4 py-2 rounded-md">Add to Cart</button>
         </div>
       ))}
 
