@@ -3,19 +3,47 @@ import { ProductCatalog as ProductCatalogComponent } from '../components/Product
 import Layout from '../layouts/Layout.astro';
 import fetchApi from '../lib/strapi';
 
+interface ImageFormat {
+  url: string;
+}
+
+interface Image {
+  url: string;
+  formats: {
+    thumbnail: ImageFormat;
+    large: ImageFormat;
+    medium: ImageFormat;
+    small: ImageFormat;
+  };
+}
+
 interface Product {
   id: number;
   Title: string;
-  Image: [{ url: string }];
+  Image: Image[];
   Price: number;
 }
 
-const products = await fetchApi({ endpoint: "products", wrappedByKey: "data" });
-console.log("products: ", products);
+let products: Product[] = [];
+try {
+  const response = await fetchApi<{ data: Product[] }>({ endpoint: "products" });
+  products = response.data.map(product => ({
+    id: product.id,
+    Title: product.Title,
+    Image: product.Image.map(img => ({
+      url: img.url,
+      formats: img.formats
+    })),
+    Price: product.Price
+  }));
+} catch (error) {
+  console.error('Failed to fetch products:', error);
+}
+
 ---
 
 <Layout title="Product Catalog">
   <div class="container mx-auto my-10">
-    <!-- <ProductCatalogComponent products={products} /> -->
+    <ProductCatalogComponent products={products} />
   </div>
 </Layout>
