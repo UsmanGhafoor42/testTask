@@ -23,15 +23,17 @@ interface Product {
 
 interface ProductCatalogProps {
   products: Product[];
+  
 }
 
 export const ProductCatalog = ({ products }: ProductCatalogProps) => {
+  console.log(products, "wasiq");
   return (
     <div className="flex flex-wrap gap-4">
       {products.map((product) => (
         <div key={product.id} className="flex items-center justify-center border rounded-md p-4 gap-10">
           <img
-            src={`http://localhost:1337${product.Image[1].formats.large.url}`}
+            src={`http://localhost:1337${product.Image[0]?.url}`}
             alt={product.Title}
             width={400}
             height={400}

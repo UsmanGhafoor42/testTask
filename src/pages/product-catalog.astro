@@ -26,8 +26,9 @@ interface Product {
 
 let products: Product[] = [];
 try {
-  const response = await fetchApi<{ data: Product[] }>({ endpoint: "products" });
-  products = response.data.map(product => ({
+  const response = await fetchApi< Product[]>({ endpoint: "products" });
+  console.log(response, "usman");
+  let products2 = response.map(product => ({
     id: product.id,
     Title: product.Title,
     Image: product.Image.map(img => ({
@@ -36,6 +37,8 @@ try {
     })),
     Price: product.Price
   }));
+  console.log(products2, "noman");
+  products = products2;
 } catch (error) {
   console.error('Failed to fetch products:', error);
 }
