@@ -29,20 +29,19 @@ interface ProductCatalogProps {
 export const ProductCatalog = ({ products }: ProductCatalogProps) => {
   console.log(products, "wasiq");
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap justify-between gap-4">
       {products.map((product) => (
-        <div key={product.id} className="flex items-center justify-center border rounded-md p-4 gap-10">
+        <div key={product.id} className="flex justify-between items-center bg-gray-200 w-[600px] rounded-md p-4 gap-10">
           <img
             src={`http://localhost:1337${product.Image[0]?.url}`}
             alt={product.Title}
-            width={400}
-            height={400}
+            className="w-52 h-52 object-contain bg-[#fffafa] rounded-md"
           />
-          <div className="flex flex-col items-center justify-center gap-5">
+          <div className="flex flex-col gap-5 mr-20">
             <h1 className="text-2xl font-bold">{product.Title}</h1>
             <p className="text-xl">Price: ${product.Price}</p>
-          </div>
           <button className="bg-black text-white px-4 py-2 rounded-md">Add to Cart</button>
+          </div>
         </div>
       ))}
     </div>

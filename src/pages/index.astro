@@ -1,10 +1,70 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
-import Header from '../components/Header.astro';
+import { ProductCatalog as ProductCatalogComponent } from "../components/ProductCatalog.tsx";
+import Layout from "../layouts/Layout.astro";
+import fetchApi from "../lib/strapi";
+
+import { Image } from "astro:assets";
+
+interface ImageFormat {
+  url: string;
+}
+
+interface Image {
+  url: string;
+  formats: {
+    thumbnail: ImageFormat;
+    large: ImageFormat;
+    medium: ImageFormat;
+    small: ImageFormat;
+  };
+}
+
+interface Product {
+  id: number;
+  Title: string;
+  Image: Image[];
+  Price: number;
+}
+
+let products: Product[] = [];
+try {
+  const response = await fetchApi<Product[]>({ endpoint: "products" });
+  let products2 = response.map((product) => ({
+    id: product.id,
+    Title: product.Title,
+    Image: product.Image.map((img) => ({
+      url: img.url,
+      formats: img.formats,
+    })),
+    Price: product.Price,
+  }));
+  products = products2;
+} catch (error) {
+  console.error("Failed to fetch products:", error);
+}
 ---
 
 <Layout title="Welcome to Astro.">
+  <div class="flex gap-20 items-center p-10 bg-gray-200 rounded-md">
+    <div class="flex flex-col gap-10 justify-center w-1/2">
+      <h1 class="text-4xl font-bold">Your One-Stop Electronics Market</h1>
+      <p class="text-xl">
+        We sell all kinds of electronics, from laptops to smartphones, and
+        everything in between. We also sell computer parts and accessories.
+      </p>
+    </div>
+    <div class="w-1/2">
+      <Image
+        src="/images/header.jpg"
+        alt="Electronics"
+        width={900}
+        height={900}
+        class="rounded-md"
+      />
+    </div>
+  </div>
+
+  <div class="container mx-auto my-10">
+    <ProductCatalogComponent products={products} />
+  </div>
 </Layout>
-
-

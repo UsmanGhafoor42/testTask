@@ -1,46 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import type { FormEvent } from "react";
+import axios from "axios";
 
 const LoginForm: React.FC = () => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ identifier: username, password }),
-    });
-    if (response.ok) {
-      // Handle successful login
-    } else {
-      // Handle errors
+
+    const loginInfo = {
+      identifier: username,
+      password: password
+    };
+    console.log(loginInfo, "loginInfo");
+
+    try {
+      const response = await axios.post('http://localhost:1337/api/auth/local', loginInfo);
+      const loginResponse = response.data;
+
+      document.cookie = `jwt=${loginResponse.jwt}; max-age=2592000; path=/;`;
+
+      window.location.href = '/';
+    } catch (error) {
+      setError('Login failed');
     }
-  };
+  }
 
   return (
-    <div className=" bg-gray-100 p-4 rounded-md flex flex-col gap-10 border-2 border-gray-300 w-1/2 py-14">
-    <form onSubmit={handleSubmit} className="flex flex-col gap-10">
-      <input className="p-2 rounded-md px-4"
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input className="p-2 rounded-md px-4"
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+    <div className="bg-gray-100 p-4 rounded-md flex flex-col gap-10 border-2 border-gray-300 w-1/2 py-14">
+      <form onSubmit={handleLogin} className="flex flex-col gap-10">
+        {error && <p className="text-red-500">{error}</p>}
+        <input className="p-2 rounded-md px-4"
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
-      <button type="submit" className="p-2 rounded-md bg-black text-white">Login</button>
-    </form>
-    <div className="flex gap-2 justify-end">
+        <input className="p-2 rounded-md px-4"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button type="submit" className="p-2 rounded-md bg-black text-white">Login</button>
+      </form>
+      <div className="flex gap-2 justify-end">
         <p className="text-gray-500">Don't have an account?</p>
         <a href="/register" className="text-black font-bold">Register</a>
+      </div>
     </div>
-    
-        </div>
   );
 };
 

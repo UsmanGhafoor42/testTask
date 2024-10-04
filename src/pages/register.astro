@@ -1,5 +1,34 @@
 ---
-import RegisterForm from "../components/RegisterForm.tsx";
+import RegisterForm from "../components/RegisterForm";
+
+// import handleRegister from '../lib/handleRegister';
+
+
+
+
+// const formData = RegisterForm;
+
+// const response = await fetch("http://localhost:1337/api/auth/local/register",{
+  
+//   method: 'POST',
+//     headers: {'Content-Type':'application/json'},
+//     body: JSON.stringify(formData)
+// })
+// console.log(response, "usman");
+// const data = RegisterForm;
+// const response = await fetch('http://localhost:1337/api/auth/local/register', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify(data), // Ensure 'data' is correctly structured
+//   });
+
+//   if (!response.ok) {
+//     const errorBody = await response.text(); // Get the error response body
+//     console.error('Error response:', errorBody); // Log the error for debugging
+//     throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
+//   }
 ---
 
 
@@ -7,6 +36,9 @@ import RegisterForm from "../components/RegisterForm.tsx";
   <div class="w-1/2 h-screen bg-[url('/images/image-2.svg')] bg-cover bg-center">
   </div>
   <div class="w-1/2 flex justify-center items-center">
-    <RegisterForm />
+    
+    <RegisterForm client:load />
+     
+   
   </div>
 </div>
