@@ -1,6 +1,11 @@
 ---
 
-const username = Astro.cookies.get("username");
+import { Logout } from "./Logout.tsx";
+
+const jwt = Astro.cookies.get("jwt") || window.sessionStorage.getItem("jwt");
+
+  
+
 
 ---
 
@@ -19,21 +24,16 @@ const username = Astro.cookies.get("username");
     <a href="/cart" class="text-xl font-bold  text-black">Cart</a>
   </nav>
 
-  {
-    username?.value ? (
-      <a
-        href="/logout"
-        class="bg-black text-white py-3 px-6 rounded-xl text-xl"
-      >
-        Logout
-      </a>
-    ) : (
-      <a
-        href="/login"
-        class="bg-black text-white py-3 px-6 rounded-xl text-xl"
-      >
-        Login
-      </a>
-    )
-  }
+  {jwt ? (
+      <Logout client:load/>
+    
+  ) : (
+    <a
+      href="/login"
+      class="bg-black text-white py-3 px-6 rounded-xl text-xl"
+    >
+      Login
+    </a>
+  )}
 </header>
+

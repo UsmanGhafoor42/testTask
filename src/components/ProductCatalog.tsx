@@ -27,7 +27,7 @@ interface ProductCatalogProps {
 }
 
 export const ProductCatalog = ({ products }: ProductCatalogProps) => {
-  console.log(products, "wasiq");
+  // console.log(products, "wasiq");
   return (
     <div className="flex flex-wrap justify-between gap-4">
       {products.map((product) => (

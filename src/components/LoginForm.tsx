@@ -20,8 +20,11 @@ const LoginForm: React.FC = () => {
       const response = await axios.post('http://localhost:1337/api/auth/local', loginInfo);
       const loginResponse = response.data;
 
-      document.cookie = `jwt=${loginResponse.jwt}; max-age=2592000; path=/;`;
+      // Store JWT in sessionStorage
+      sessionStorage.setItem('jwt', loginResponse.jwt);
+      sessionStorage.setItem('user', JSON.stringify(loginResponse.user));
 
+      console.log(response.data, "loginResponse");
       window.location.href = '/';
     } catch (error) {
       setError('Login failed');
