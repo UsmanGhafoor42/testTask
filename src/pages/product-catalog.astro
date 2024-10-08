@@ -25,6 +25,13 @@ interface Product {
 }
 
 let products: Product[] = [];
+let jwt = '';
+try {
+  // Replace this logic with your own JWT retrieval logic
+  jwt = sessionStorage.getItem('jwt') || '';
+} catch (error) {
+  console.error('Failed to retrieve JWT:', error);
+}
 try {
   const response = await fetchApi< Product[]>({ endpoint: "products" });
   console.log(response, "usman");
@@ -47,6 +54,6 @@ try {
 
 <Layout title="Product Catalog">
   <div class="container mx-auto my-10">
-    <ProductCatalogComponent products={products} />
+    <ProductCatalogComponent products={products} jwt={jwt} />
   </div>
 </Layout>

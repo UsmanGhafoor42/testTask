@@ -1,7 +1,19 @@
 ---
+import { Cart as CartComponent } from '../components/Cart.tsx';
 import Layout from '../layouts/Layout.astro';
+
+let jwt = '';
+try {
+  // Replace this logic with your own JWT retrieval logic
+  jwt = sessionStorage.getItem('jwt') || '';
+} catch (error) {
+  console.error('Failed to retrieve JWT:', error);
+}
+
 ---
 
-<Layout title="Cart">
-  <h1>Cart</h1>
+<Layout title="Your Cart">
+  <div class="container mx-auto my-10">
+    <CartComponent jwt={jwt} />
+  </div>
 </Layout>

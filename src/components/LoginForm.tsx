@@ -23,11 +23,12 @@ const LoginForm: React.FC = () => {
       // Store JWT in sessionStorage
       sessionStorage.setItem('jwt', loginResponse.jwt);
       sessionStorage.setItem('user', JSON.stringify(loginResponse.user));
+      sessionStorage.setItem('username', response.data.user.username);
 
       console.log(response.data, "loginResponse");
       window.location.href = '/';
-    } catch (error) {
-      setError('Login failed');
+    } catch (error: any) {
+      setError(error.response?.data?.error?.message || 'Login failed');
     }
   }
 
@@ -48,6 +49,7 @@ const LoginForm: React.FC = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit" className="p-2 rounded-md bg-black text-white">Login</button>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
       </form>
       <div className="flex gap-2 justify-end">
         <p className="text-gray-500">Don't have an account?</p>

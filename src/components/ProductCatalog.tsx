@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 
 interface ImageFormat {
   url: string;
@@ -23,10 +23,41 @@ interface Product {
 
 interface ProductCatalogProps {
   products: Product[];
+  jwt: string;
   
 }
 
-export const ProductCatalog = ({ products }: ProductCatalogProps) => {
+
+
+export const ProductCatalog = ({ products, jwt  }: ProductCatalogProps) => {
+  const [message, setMessage] = useState<string | null>(null);
+
+  const handleAddToCart = async (productId: number) => {
+    console.log("Adding product to cart", productId); 
+    try {
+      const response = await fetch("/api/add-to-cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`, // JWT token to authorize the request
+        },
+        body: JSON.stringify({
+          productId,
+          quantity: 1, // You can customize this if you want to allow users to add multiple quantities
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to add product to cart");
+      }
+  
+      const data = await response.json();
+      setMessage(`Product added to cart: ${data.product.Title}`);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      setMessage("Error adding product to cart");
+    }
+  };
   // console.log(products, "wasiq");
   return (
     <div className="flex flex-wrap justify-between gap-4">
@@ -40,7 +71,7 @@ export const ProductCatalog = ({ products }: ProductCatalogProps) => {
           <div className="flex flex-col gap-5 mr-20">
             <h1 className="text-2xl font-bold">{product.Title}</h1>
             <p className="text-xl">Price: ${product.Price}</p>
-          <button className="bg-black text-white px-4 py-2 rounded-md">Add to Cart</button>
+          <button className="bg-black text-white px-4 py-2 rounded-md" onClick={() => handleAddToCart(product.id)}>Add to Cart</button>
           </div>
         </div>
       ))}

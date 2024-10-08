@@ -3,6 +3,7 @@ import React from "react";
 export const Logout = () => {
   const handleLogouts = () => {
     sessionStorage.removeItem("jwt");
+    sessionStorage.removeItem("username");
     sessionStorage.removeItem("user");
     window.location.href = "/";
   };
